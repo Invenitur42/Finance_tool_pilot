@@ -6,6 +6,9 @@ Track accounts and transactions, see balance and monthly income/expense on a sma
 
 Amounts use **Decimal** in the backend so balances don’t drift from float rounding.
 
+**Live demo:** [Open Finance Tracker](https://invenitur42.github.io/portfolio-live-demos/finance/)  
+(All demos: [portfolio-live-demos](https://invenitur42.github.io/portfolio-live-demos/))
+
 [Open in Codespaces](https://codespaces.new/Invenitur42/Finance_tool_pilot)
 
 ---
@@ -21,7 +24,7 @@ Amounts use **Decimal** in the backend so balances don’t drift from float roun
 
 ---
 
-## Run
+## Run (full stack)
 
 ```bash
 git clone https://github.com/Invenitur42/Finance_tool_pilot.git
