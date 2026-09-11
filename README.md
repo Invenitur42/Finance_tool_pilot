@@ -1,97 +1,55 @@
 # Finance Tool Pilot
 
-Full-stack **personal finance** manager: accounts, income/expense transactions, categories, budgets, and dashboard summaries.
+Track accounts and transactions, see balance and monthly income/expense on a small dashboard.
 
-[![Open in Codespaces](https://img.shields.io/badge/Open%20in-GitHub%20Codespaces-blue?logo=github)](https://codespaces.new/Invenitur42/Finance_tool_pilot)
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688)](https://fastapi.tiangolo.com/)
-[![Next.js](https://img.shields.io/badge/Frontend-Next.js%2015-black)](https://nextjs.org/)
+**FastAPI + Postgres + Next.js**
 
-> **Live demo:** _Add Vercel + API URLs after deploy_
+Amounts use **Decimal** in the backend so balances don’t drift from float rounding.
 
----
-
-## About this project
-
-Built to demonstrate **careful domain modeling** in a full-stack app:
-
-- Money stored as **Decimal**, not float
-- Transactions update account balances consistently
-- Monthly income/expense summary for the dashboard
-- Seeded system categories + user-scoped data
-
-**Why it matters for hiring:** Finance UIs are common in product companies; this shows you respect correctness (balances, categories, time windows).
+[Open in Codespaces](https://codespaces.new/Invenitur42/Finance_tool_pilot)
 
 ---
 
 ## Features
 
-- JWT auth
+- Auth (JWT)
 - Accounts (checking, savings, cash, credit)
-- Transactions (income / expense) with categories
-- Dashboard: total balance, month income, month expense
-- Budget endpoints
-- Docker Compose (Postgres on port **5433** to avoid clashes)
+- Income / expense transactions with categories
+- Dashboard totals for the current month
+- Budget endpoints (API)
+- Postgres via Docker (host port **5433** so it doesn’t clash with other local DBs)
 
 ---
 
-## Tech stack
-
-| Layer | Tech |
-|-------|------|
-| Frontend | Next.js 15, TypeScript, Tailwind |
-| Backend | FastAPI, SQLAlchemy, JWT |
-| DB | PostgreSQL |
-
----
-
-## Run locally
+## Run
 
 ```bash
 git clone https://github.com/Invenitur42/Finance_tool_pilot.git
 cd Finance_tool_pilot
 docker compose up -d
 
-cd backend && cp .env.example .env
+cd backend
+cp .env.example .env
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python -m app.db.init_db
 uvicorn app.main:app --reload --port 8000
 
-# new terminal
-cd frontend && npm install && npm run dev
+cd ../frontend && npm install && npm run dev
 ```
 
-| Service | URL |
-|---------|-----|
-| UI | http://localhost:3000 |
-| API docs | http://localhost:8000/docs |
-
-**Or:** **Code → Codespaces** on GitHub.
+UI: http://localhost:3000 · API: http://localhost:8000/docs
 
 ---
 
-## Interview talking points
+## Notes
 
-1. **Why Decimal for money** — floats cause rounding bugs.
-2. **Balance updates** on each transaction — consistency vs eventual ledger tables.
-3. **Month boundaries** for reports (`occurred_on >= first of month`).
-4. **Category kinds** (income vs expense) keep the UI honest.
-5. **Next** — charts, CSV export, multi-currency, shared households.
+Creating a transaction updates the account balance in the same flow. Categories are seeded for common income/expense types; users only see their own data.
+
+Possible follow-ups: charts, CSV import/export, multi-currency.
 
 ---
 
 ## Deploy
 
-- Frontend → Vercel (`frontend/`)
-- Backend → Railway/Render + managed Postgres
-- Set `DATABASE_URL`, `SECRET_KEY`
-
----
-
-## Screenshots
-
-_Add: summary cards, accounts list, transactions table._
-
----
-
-Portfolio hub: [ai-tools-portfolio](https://github.com/Invenitur42/ai-tools-portfolio)
+Frontend → Vercel. API + Postgres → Railway/Render. Wire `DATABASE_URL` and `SECRET_KEY`.
