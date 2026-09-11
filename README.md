@@ -1,105 +1,97 @@
-# Personal Finance Manager
+# Finance Tool Pilot
 
-A full-stack **personal finance** application for tracking income, expenses, budgets, and insights.
+Full-stack **personal finance** manager: accounts, income/expense transactions, categories, budgets, and dashboard summaries.
 
-Built for mid-level full-stack developer interviews. Covers classic product requirements: accounts, transactions, categories, budgets, and summary dashboards with charts.
+[![Open in Codespaces](https://img.shields.io/badge/Open%20in-GitHub%20Codespaces-blue?logo=github)](https://codespaces.new/Invenitur42/Finance_tool_pilot)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688)](https://fastapi.tiangolo.com/)
+[![Next.js](https://img.shields.io/badge/Frontend-Next.js%2015-black)](https://nextjs.org/)
+
+> **Live demo:** _Add Vercel + API URLs after deploy_
+
+---
+
+## About this project
+
+Built to demonstrate **careful domain modeling** in a full-stack app:
+
+- Money stored as **Decimal**, not float
+- Transactions update account balances consistently
+- Monthly income/expense summary for the dashboard
+- Seeded system categories + user-scoped data
+
+**Why it matters for hiring:** Finance UIs are common in product companies; this shows you respect correctness (balances, categories, time windows).
 
 ---
 
 ## Features
 
-- [x] User authentication (JWT)
-- [x] Accounts (checking, savings, cash, credit)
-- [x] Transactions (income / expense) with categories
-- [x] Categories (system + custom)
-- [x] Budgets per category / month
-- [x] Dashboard summaries (balance, spending by category, recent activity)
-- [x] Docker Compose (Postgres)
-- [x] Next.js frontend structure
-- [ ] Charts (Recharts / Chart.js)
-- [ ] CSV export / import (optional)
+- JWT auth
+- Accounts (checking, savings, cash, credit)
+- Transactions (income / expense) with categories
+- Dashboard: total balance, month income, month expense
+- Budget endpoints
+- Docker Compose (Postgres on port **5433** to avoid clashes)
 
 ---
 
-## Tech Stack
+## Tech stack
 
-| Layer    | Technology                          |
-|----------|-------------------------------------|
-| Frontend | Next.js 15 + TypeScript + Tailwind  |
-| Backend  | FastAPI + Python 3.11+              |
-| Database | PostgreSQL + SQLAlchemy             |
-| Auth     | JWT (python-jose + passlib)         |
-| Infra    | Docker + docker-compose             |
+| Layer | Tech |
+|-------|------|
+| Frontend | Next.js 15, TypeScript, Tailwind |
+| Backend | FastAPI, SQLAlchemy, JWT |
+| DB | PostgreSQL |
 
 ---
 
-## Architecture
-
-```
-User → Next.js Frontend
-         ↓
-      FastAPI Backend
-         ├── Auth
-         ├── Accounts
-         ├── Categories & Transactions
-         ├── Budgets
-         └── Reports / Summaries
-         ↓
-      PostgreSQL
-```
-
----
-
-## API Overview
-
-| Method | Endpoint                      | Description                |
-|--------|-------------------------------|----------------------------|
-| POST   | `/api/v1/auth/register`       | Register                   |
-| POST   | `/api/v1/auth/login`          | Login                      |
-| GET    | `/api/v1/auth/me`             | Current user               |
-| GET    | `/api/v1/accounts/`           | List accounts              |
-| POST   | `/api/v1/accounts/`           | Create account             |
-| GET    | `/api/v1/transactions/`       | List transactions          |
-| POST   | `/api/v1/transactions/`       | Create transaction         |
-| GET    | `/api/v1/categories/`         | List categories            |
-| GET    | `/api/v1/budgets/`            | List budgets               |
-| POST   | `/api/v1/budgets/`            | Create / update budget     |
-| GET    | `/api/v1/reports/summary`     | Dashboard summary numbers  |
-
----
-
-## Getting Started
+## Run locally
 
 ```bash
-git clone https://github.com/Invenitur42/personal-finance-manager.git
-cd personal-finance-manager
-docker-compose up -d
+git clone https://github.com/Invenitur42/Finance_tool_pilot.git
+cd Finance_tool_pilot
+docker compose up -d
 
-# Backend
-cd backend
-cp .env.example .env
+cd backend && cp .env.example .env
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python -m app.db.init_db
 uvicorn app.main:app --reload --port 8000
 
-# Frontend
-cd ../frontend
-npm install && npm run dev
+# new terminal
+cd frontend && npm install && npm run dev
 ```
 
-Open http://localhost:3000
+| Service | URL |
+|---------|-----|
+| UI | http://localhost:3000 |
+| API docs | http://localhost:8000/docs |
+
+**Or:** **Code → Codespaces** on GitHub.
 
 ---
 
-## Interview Talking Points
+## Interview talking points
 
-- Modeling money carefully (use Decimal, avoid float)
-- Transaction integrity and account balance consistency
-- Time-based reporting (this month / last 30 days)
-- Budget vs actual spending calculations
-- How you would add multi-currency or shared households later
+1. **Why Decimal for money** — floats cause rounding bugs.
+2. **Balance updates** on each transaction — consistency vs eventual ledger tables.
+3. **Month boundaries** for reports (`occurred_on >= first of month`).
+4. **Category kinds** (income vs expense) keep the UI honest.
+5. **Next** — charts, CSV export, multi-currency, shared households.
 
 ---
 
-Part of a full-stack portfolio focused on production-style applications.
+## Deploy
+
+- Frontend → Vercel (`frontend/`)
+- Backend → Railway/Render + managed Postgres
+- Set `DATABASE_URL`, `SECRET_KEY`
+
+---
+
+## Screenshots
+
+_Add: summary cards, accounts list, transactions table._
+
+---
+
+Portfolio hub: [ai-tools-portfolio](https://github.com/Invenitur42/ai-tools-portfolio)
